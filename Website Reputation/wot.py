@@ -60,7 +60,8 @@ def getCategory(category):
 			group = 'Questionable'
 			if category == 402: description = 'Incidental nudity'
 			elif category == 403: description = 'Gruesome or shocking'
-			else: description = 'There was probably an error interpreting the code'
+			else: description = 'There was probably an error interpreting the\
+				code'
 
 	#Neutral
 	elif category >= 300 and category <= 400:
@@ -138,15 +139,18 @@ def main():
 				print '\tTarget: %s' % json[domain][component]
 			elif component == '0':
 				trust = getScore(json[domain][component][0])
-				print "\tTrustworthiness: %s [%s]" % (trust,json[domain][component][1])
+				print "\tTrustworthiness: %s [%s]" % (trust,
+					json[domain][component][1])
 			elif component == '4':
 				childSafety = getScore(json[domain][component][0])
-				print "\tChild safety: %s [%s]" % (childSafety,json[domain][component][1])
+				print "\tChild safety: %s [%s]" % (childSafety,
+					json[domain][component][1])
 			elif component == 'categories':
 				print "\t[*] Categories:"
 				for category in json[domain][component]:
 					group, desc = getCategory(int(category))
-					print "\t\t[%s] %s %s [%s]" % (category, group, desc, json[domain][component][category])
+					print "\t\t[%s] %s %s [%s]" % (category, group, desc, 
+						json[domain][component][category])
 
 if __name__ == '__main__':
 	main()
