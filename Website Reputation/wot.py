@@ -1,3 +1,7 @@
+#####################
+# wot.py by @xgusix #
+#####################
+
 import requests
 import sys
 import simplejson
