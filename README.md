@@ -5,6 +5,14 @@ Bunch of scripts I use in my daily job in order to make it faster and easier,
 also to automate some repetitive tasks
 
 
+Mail
+====
+
+mailextractor.py
+----------------
+
+Script to quickly disect an e-mail in .eml format.
+
 Visibility
 ==========
 
