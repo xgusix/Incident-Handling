@@ -12,13 +12,15 @@ import time
 import argparse
 
 
-VT_API = "Your_VT_API_key"
+VT_API = "Your_API_key"
 
 def init():
 
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-f", "--file", nargs=1, metavar='filename',
 		help="File to process.")
+	parser.add_argument("-o", "--output", nargs=1,
+		help="Output.")
 	parser.add_argument("-vt", "--virustotal", action='store_true',
 		help="Skip virustotal chekings.")
 	args = parser.parse_args()
@@ -38,15 +40,24 @@ def get_ip_addresses(email_message):
 			ip_addresses.append(ip)
 	return unique(ip_addresses)
 
+def recursive(payload):
+	for i in payload:
+		if i.get_content_maintype() == "multipart":
+			mail = i.get_payload()
+			body = recursive(mail)
+			return body
+		elif i.get_content_maintype()  == "text":
+			return i.get_payload()
+
 def get_body(email_message):
 	maintype = email_message.get_content_maintype()
-	if maintype == 'multipart':
-		for part in email_message.get_payload():
-			if part.get_content_maintype() == 'text':
-				return part.get_payload()
-	elif maintype == 'text':
-		return email_message.get_payload()
-
+	payload = email_message.get_payload()
+	if maintype == "multipart":
+		body = recursive(payload)
+	elif maintype == "text":
+		body = email_message.get_payload()
+	return body
+	
 def get_links(body):
 	links = []
 	regex = re.compile(r'http.+\.[0-9a-zA-Z\-\_\/\%\&\|\\\+\=\?\(\)\$\!]+\.[0-9a-zA-Z\-\_\/\%\&\|\\\+\=\?\(\)\$\!]+')
